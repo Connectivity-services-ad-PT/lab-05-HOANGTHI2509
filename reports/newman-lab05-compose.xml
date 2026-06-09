@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Smart Campus - Core Business API Contract (Completed)" tests="6" time="0.035">
-  <testsuite name="01_Functional / POST /alerts - Happy path" id="61c18f4a-4bae-4d5f-9d72-5f6ac3c7f74d" timestamp="2026-06-09T03:25:42.076Z" tests="2" failures="0" errors="0" time="0.020">
-    <testcase name="Status code is 201" time="0.020" classname="01FunctionalPostAlertsHappyPath"/>
-    <testcase name="Response contains id and status" time="0.020" classname="01FunctionalPostAlertsHappyPath"/>
+<testsuites name="Smart Campus - Core Business API Contract (Completed)" tests="6" time="0.039">
+  <testsuite name="01_Functional / POST /alerts - Happy path" id="b16c34eb-0a2e-49e3-b5f9-173cfbca337d" timestamp="2026-06-09T03:29:50.623Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="Status code is 201" time="0.023" classname="01FunctionalPostAlertsHappyPath"/>
+    <testcase name="Response contains id and status" time="0.023" classname="01FunctionalPostAlertsHappyPath"/>
   </testsuite>
-  <testsuite name="02_Auth / POST /events - Missing Token" id="a15091b0-a814-4de2-bcdf-5e6e373d77a5" timestamp="2026-06-09T03:25:42.076Z" tests="1" failures="0" errors="0" time="0.003">
-    <testcase name="Missing token returns 401 Unauthorized" time="0.003" classname="02AuthPostEventsMissingToken"/>
+  <testsuite name="02_Auth / POST /events - Missing Token" id="44b3b583-9bb1-4461-9d81-96320075dfde" timestamp="2026-06-09T03:29:50.623Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="Missing token returns 401 Unauthorized" time="0.004" classname="02AuthPostEventsMissingToken"/>
   </testsuite>
-  <testsuite name="03_Negative / POST /events - Invalid Payload" id="f9471157-2510-471d-9b98-89f0862418ea" timestamp="2026-06-09T03:25:42.076Z" tests="2" failures="0" errors="0" time="0.003">
+  <testsuite name="03_Negative / POST /events - Invalid Payload" id="5c691e9d-c6a3-4366-ae7b-619b699013d7" timestamp="2026-06-09T03:29:50.623Z" tests="2" failures="0" errors="0" time="0.003">
     <testcase name="Invalid payload returns 400 or 422" time="0.003" classname="03NegativePostEventsInvalidPayload"/>
     <testcase name="Error follows ProblemDetails" time="0.003" classname="03NegativePostEventsInvalidPayload"/>
   </testsuite>
-  <testsuite name="04_Boundary_Reliability / GET /alerts/recent - Limit Above Max" id="43b3e4ac-e966-4578-a053-93ad74369c57" timestamp="2026-06-09T03:25:42.076Z" tests="1" failures="0" errors="0" time="0.003">
+  <testsuite name="04_Boundary_Reliability / GET /alerts/recent - Limit Above Max" id="fdca9c67-4d0b-4f36-9b52-ae4d13072317" timestamp="2026-06-09T03:29:50.623Z" tests="1" failures="0" errors="0" time="0.003">
     <testcase name="Limit above max returns 400 or 422" time="0.003" classname="04BoundaryReliabilityGetAlertsRecentLimitAboveMax"/>
   </testsuite>
-  <testsuite name="05_Consumer_side_Smoke / POST /vision/face-match - Call AI Vision" id="df89fbd5-1f0e-4c89-8fb5-715b1aaccd19" timestamp="2026-06-09T03:25:42.076Z" tests="2" failures="0" errors="0" time="0.003">
+  <testsuite name="05_Consumer_side_Smoke / POST /vision/face-match - Call AI Vision" id="95a7fc8c-69ed-4ddf-a1c4-0ee966f30d18" timestamp="2026-06-09T03:29:50.623Z" tests="2" failures="0" errors="0" time="0.003">
     <testcase name="Face match mock returns 201 Created" time="0.003" classname="05ConsumerSideSmokePostVisionFaceMatchCallAiVision"/>
     <testcase name="Response has detection results" time="0.003" classname="05ConsumerSideSmokePostVisionFaceMatchCallAiVision"/>
   </testsuite>
-  <testsuite name="06_Local_only_NonFunctional / GET /health - Latency Test" id="2a5ffc00-1231-41b6-bdb0-5a6f4bb79549" timestamp="2026-06-09T03:25:42.076Z" tests="1" failures="0" errors="0" time="0.003">
+  <testsuite name="06_Local_only_NonFunctional / GET /health - Latency Test" id="c8dd60b6-8c1a-4823-9602-1a53d8197ff0" timestamp="2026-06-09T03:29:50.623Z" tests="1" failures="0" errors="0" time="0.003">
     <testcase name="Local service responds under 1000ms" time="0.003" classname="06LocalOnlyNonFunctionalGetHealthLatencyTest"/>
   </testsuite>
 </testsuites>
