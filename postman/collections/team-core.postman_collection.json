@@ -1,0 +1,233 @@
+{
+  "info": {
+    "name": "Smart Campus - Core Business API Contract (Completed)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01_Functional",
+      "item": [
+        {
+          "name": "POST /alerts - Happy path",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alerts",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceService\": \"core-business\",\n  \"alertType\": \"UNAUTHORIZED_ACCESS\",\n  \"severity\": \"HIGH\",\n  \"message\": \"Phát hiện truy cập trái phép\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response contains id and status', function () {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "  pm.expect(json).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02_Auth",
+      "item": [
+        {
+          "name": "POST /events - Missing Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"ACCESS_CHECK\",\n  \"eventId\": \"0196fb3d-4ad7-7d1e-9f49-5d5148d2babd\",\n  \"gateId\": \"GATE-01\",\n  \"cardId\": \"RFID-2026-001\",\n  \"decision\": \"ALLOW\",\n  \"timestamp\": \"2026-05-10T08:01:00Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Missing token returns 401 Unauthorized', function () { pm.expect(pm.response.code).to.eql(401); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03_Negative",
+      "item": [
+        {
+          "name": "POST /events - Invalid Payload",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Prefer", "value": "code=400" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["events"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventType\": \"ACCESS_CHECK\",\n  \"gateId\": \"GATE-01\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Invalid payload returns 400 or 422', function () { pm.expect([400, 422]).to.include(pm.response.code); });",
+                  "pm.test('Error follows ProblemDetails', function () {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('title');",
+                  "  pm.expect(json.status).to.be.within(400, 599);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04_Boundary_Reliability",
+      "item": [
+        {
+          "name": "GET /alerts/recent - Limit Above Max",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alerts/recent?limit=101",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts", "recent"],
+              "query": [
+                { "key": "limit", "value": "101" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Limit above max returns 400 or 422', function () { pm.expect([400, 422]).to.include(pm.response.code); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05_Consumer_side_Smoke",
+      "item": [
+        {
+          "name": "POST /vision/face-match - Call AI Vision",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vision/face-match",
+              "host": ["{{baseUrl}}"],
+              "path": ["vision", "face-match"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imageRef\": \"https://campus.local/images/card-scan-001.jpg\",\n  \"requestId\": \"0196fb3d-4ad7-7d1e-9f49-5d5148d2babc\",\n  \"cameraId\": \"CAM-002\",\n  \"timestamp\": \"2026-05-10T08:01:00Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Face match mock returns 201 Created', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Response has detection results', function () {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('faceMatched');",
+                  "  pm.expect(json).to.have.property('detectionId');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06_Local_only_NonFunctional",
+      "item": [
+        {
+          "name": "GET /health - Latency Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const env = pm.environment.get('env') || 'mock';",
+                  "if (env === 'local') {",
+                  "  pm.test('Local service responds under 1000ms', function () { pm.expect(pm.response.responseTime).to.be.below(1000); });",
+                  "} else {",
+                  "  pm.test('Skipped on mock', function () { pm.expect(true).to.eql(true); });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

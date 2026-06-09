@@ -1,12 +1,12 @@
 version: "3.8"
 
 services:
-  # Service API FastAPI
-  api:
+  # Service API FastAPI (Core Policy Engine)
+  core-api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fit4110-api-lab05
+    container_name: fit4110-core-api-lab05
     env_file:
       - .env
     depends_on:
@@ -51,7 +51,7 @@ services:
     working_dir: /service
     volumes:
       - ./src/ai_service:/service
-    command: ["python", "main.py"]
+    command: ["sh", "-c", "pip install fastapi uvicorn pydantic requests && python main.py"]
     networks:
       - team-internal
     healthcheck:
