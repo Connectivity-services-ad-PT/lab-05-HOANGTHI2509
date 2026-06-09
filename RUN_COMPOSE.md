@@ -35,7 +35,7 @@ Lệnh trên sẽ tạo các container:
 
 - `fit4110-db-lab05` (PostgreSQL)
 - `fit4110-ai-lab05` (AI service mẫu chạy port 9000)
-- `fit4110-api-lab05` (API FastAPI trên port 8000)
+- `fit4110-core-api-lab05` (API FastAPI trên port 8000)
 
 Theo dõi log:
 
